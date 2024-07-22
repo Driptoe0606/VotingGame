@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vote and Launch Shadipto</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+        }
+        #superVoteButton {
+            background-color: red;
+            color: white;
+            display: none;
+        }
+        #ultimateVoteButton {
+            background-color: purple;
+            color: white;
+            display: none;
+        }
+        .launch-area {
+            margin-top: 50px;
+            height: 300px;
+            background-color: #e0e0e0;
+            position: relative;
+        }
+        .square {
+            width: 50px;
+            height: 50px;
+            background-image: url('your-image.png'); /* Replace 'your-image.png' with the path to your image file */
+            background-size: cover;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Vote and Launch Shadipto!</h1>
+        <button id="voteButton">Vote</button>
+        <button id="launchButton">Launch</button>
+        <button id="superVoteButton">SUPER VOTE</button>
+        <button id="ultimateVoteButton">ULTIMATE VOTE</button>
+        <div class="votes">
+            Votes: <span id="voteCount">0</span>
+        </div>
+        <div class="distance">
+            Distance: <span id="distanceCount">0</span> pixels
+        </div>
+        <div class="launch-area">
+            <div class="square" id="square"></div>
+        </div>
+    </div>
+
+    <audio id="launchSound" src="Sound.m4a"></audio>
+
+    <script>
+        let voteCount = 0;
+        let launchDistance = 0;
+        const voteButton = document.getElementById('voteButton');
+        const launchButton = document.getElementById('launchButton');
+        const superVoteButton = document.getElementById('superVoteButton');
+        const ultimateVoteButton = document.getElementById('ultimateVoteButton');
+        const voteCountDisplay = document.getElementById('voteCount');
+        const distanceCountDisplay = document.getElementById('distanceCount');
+        const square = document.getElementById('square');
+        const launchSound = document.getElementById('launchSound');
+
+        voteButton.addEventListener('click', () => {
+            voteCount++;
+            voteCountDisplay.textContent = voteCount;
+            if (voteCount > 50) {
+                superVoteButton.style.display = 'inline-block';
+            }
+            if (voteCount > 1000) {
+                ultimateVoteButton.style.display = 'inline-block';
+            }
+        });
+
+        superVoteButton.addEventListener('click', () => {
+            voteCount += 50;
+            voteCountDisplay.textContent = voteCount;
+        });
+
+        ultimateVoteButton.addEventListener('click', () => {
+            voteCount += 500;
+            voteCountDisplay.textContent = voteCount;
+        });
+
+        launchButton.addEventListener('click', () => {
+            let distance = voteCount * 10; // Adjust the multiplier to control distance
+            launchDistance = distance;
+            square.style.transition = 'transform 1s';
+            square.style.transform = `translate(${distance}px, -${distance}px)`;
+            launchSound.play();
+            setTimeout(() => {
+                square.style.transition = 'transform 0s';
+                square.style.transform = 'translate(0, 0)';
+            }, 1000); // Reset the position after the animation
+            distanceCountDisplay.textContent = distance; // Update the distance counter
+            voteCount = 0; // Reset votes after launch
+            voteCountDisplay.textContent = voteCount;
+            superVoteButton.style.display = 'none'; // Hide SUPER VOTE button
+            ultimateVoteButton.style.display = 'none'; // Hide ULTIMATE VOTE button
+        });
+    </script>
+</body>
+</html>
